@@ -1,0 +1,78 @@
+using System;
+
+public enum Plec
+{
+    Kobieta,
+    Mezczyzna
+}
+
+public struct Student
+{
+    public string Nazwisko;
+    public int NrAlbumu;
+    private double ocena;
+    public Plec Plec;
+
+    public double Ocena
+    {
+        get { return ocena; }
+        set
+        {
+            if (value < 2.0)
+                ocena = 2.0;
+            else if (value > 5.0)
+                ocena = 5.0;
+            else
+                ocena = value;
+        }
+    }
+}
+
+public class Program
+{
+    public static void WypelnijStudenta(ref Student student, string nazwisko, int nrAlbumu, double ocena, Plec plec)
+    {
+        student.Nazwisko = nazwisko;
+        student.NrAlbumu = nrAlbumu;
+        student.Ocena = ocena;
+        student.Plec = plec;
+    }
+
+    public static double ObliczSrednia(Student[] grupa)
+    {
+        if (grupa.Length == 0)
+            return 0.0;
+
+        double sumaOcen = 0.0;
+        foreach (Student student in grupa)
+        {
+            sumaOcen += student.Ocena;
+        }
+
+        return sumaOcen / grupa.Length;
+    }
+
+    public static void WyswietlStudenta(Student student)
+    {
+        Console.WriteLine($"Nazwisko: {student.Nazwisko}, Nr albumu: {student.NrAlbumu}, Ocena: {student.Ocena}, Płeć: {student.Plec}");
+    }
+
+    public static void Main(string[] args)
+    {
+        Student[] grupa = new Student[5];
+
+        WypelnijStudenta(ref grupa[0], "Wałesa", 15325, 3.8, Plec.Mezczyzna);
+        WypelnijStudenta(ref grupa[1], "Duda", 15361, 4.6, Plec.Kobieta);
+        WypelnijStudenta(ref grupa[2], "Kaczyński", 12356, 4.3, Plec.Mezczyzna);
+        WypelnijStudenta(ref grupa[3], "Bierut", 15675, 3.5, Plec.Kobieta);
+        WypelnijStudenta(ref grupa[4], "Komorowski", 14679, 4.5, Plec.Mezczyzna);
+
+        foreach (Student student in grupa)
+        {
+            WyswietlStudenta(student);
+        }
+
+        double srednia = ObliczSrednia(grupa);
+        Console.WriteLine($"Średnia ocen: {srednia}");
+    }
+}
